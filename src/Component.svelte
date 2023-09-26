@@ -45,14 +45,16 @@
 
   // This function will check the field Schema for min / max constraints and automatically set the props
   // If no constraints are detected, it will fall back to defaults
-  function setBoundariesFromFieldSchema ( fieldSchema ) {
-    let _min = fieldSchema.constraints.numericality.greaterThanOrEqualTo || 1
-    let _max = fieldSchema.constraints.numericality.lessThanOrEqualTo || 100
-    let _label = fieldSchema.name || "Slider Input"
+  function setBoundariesFromFieldSchema(fieldSchema) {
+    let constraints = fieldSchema.constraints.numericality || {};
 
-    builderStore.actions.updateProp("min", _min)
-    builderStore.actions.updateProp("max", _max)
-    builderStore.actions.updateProp("label", _label)
+    let _min = (constraints.greaterThanOrEqualTo !== undefined) ? constraints.greaterThanOrEqualTo : 1;
+    let _max = (constraints.lessThanOrEqualTo !== undefined) ? constraints.lessThanOrEqualTo : 100;
+    let _label = fieldSchema.name || "Slider Input";
+
+    builderStore.actions.updateProp("min", _min);
+    builderStore.actions.updateProp("max", _max);
+    builderStore.actions.updateProp("label", _label);
   }
 
   function handleChange( event ) {
